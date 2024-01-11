@@ -10,5 +10,8 @@ run: search
 libshim.so: shim.h shim.cpp
 	g++ -fPIC -shared -o $@ shim.cpp $(CPPFLAGS) $(LDFLAGS)
 
-try: shim.so
+try: libshim.so try.c
 	gcc try.c -L. -lshim -o try $(LDFLAGS)
+
+runtry: try
+	LD_LIBRARY_PATH=/home/brent/omsf/clone/rdkit/build/lib:. ./try
