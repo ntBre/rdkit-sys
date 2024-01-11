@@ -12,7 +12,7 @@ fn main() {
     println!("cargo:rustc-link-lib=RDKitGraphMol");
 
     // Tell cargo to invalidate the built crate whenever the wrapper changes
-    println!("cargo:rerun-if-changed=wrapper.h");
+    println!("cargo:rerun-if-changed=wrapper.hpp");
 
     // The bindgen::Builder is the main entry point to bindgen, and lets you
     // build up options for the resulting bindings.
@@ -22,11 +22,11 @@ fn main() {
         .clang_arg(format!("-I{RDKIT_ROOT}/Code"))
         .clang_arg(format!("-I{RDKIT_ROOT}/Code/GraphMol"))
         .clang_arg("-std=c++17")
+        .allowlist_type("RDKit::RWMol")
+        .opaque_type("RDKit::RWMol")
         // Tell cargo to invalidate the built crate whenever any of the included
         // header files changed.
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
-        .allowlist_type("RWMol")
-        .allowlist_type("ROMol")
         // Finish the builder and generate the bindings.
         .generate()
         // Unwrap the Result and panic on failure.
