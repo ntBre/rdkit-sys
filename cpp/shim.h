@@ -1,8 +1,13 @@
-#include <GraphMol/FileParsers/MolSupplier.h>
+  typedef struct RDKit_SDMolSupplier RDKit_SDMolSupplier;
 
-/* extern "C" { */
-/*   typedef RDKit::SDMolSupplier RDKit_SDMolSupplier; */
-/*   RDKit_SDMolSupplier RDKit_create_mol_supplier(const char *filename); */
-/* } */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-RDKit::SDMolSupplier RDKit_create_mol_supplier(const char *filename);
+  RDKit_SDMolSupplier *RDKit_create_mol_supplier(const char *filename);
+
+#ifdef __cplusplus
+}
+#endif
+
+/* RDKit::SDMolSupplier RDKit_create_mol_supplier(const char *filename); */
