@@ -2,34 +2,26 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {
-    /// directory where openmm was built
     const RDKIT_ROOT: &str = "/home/brent/omsf/clone/rdkit";
 
     // Tell cargo to look for shared libraries in the specified directory
     println!("cargo:rustc-link-search={RDKIT_ROOT}/build/lib");
+    println!("cargo:rustc-link-search=./cpp");
 
-    // Tell cargo to tell rustc to link the libOpenMM.so from that directory
     println!("cargo:rustc-link-lib=RDKitGraphMol");
+    println!("cargo:rustc-link-lib=RDKitSmilesParse");
+    println!("cargo:rustc-link-lib=RDKitFileParsers");
+    println!("cargo:rustc-link-lib=shim");
 
-    // Tell cargo to invalidate the built crate whenever the wrapper changes
-    println!("cargo:rerun-if-changed=wrapper.hpp");
+    println!("cargo:rustc-env=LD_LIBRARY_PATH=./cpp:{RDKIT_ROOT}/build/lib");
 
-    // The bindgen::Builder is the main entry point to bindgen, and lets you
-    // build up options for the resulting bindings.
+    println!("cargo:rerun-if-changed=wrapper.h");
+
     let bindings = bindgen::Builder::default()
-        // The input header we would like to generate bindings for.
-        .header("wrapper.hpp")
+        .header("wrapper.h")
         .clang_arg(format!("-I{RDKIT_ROOT}/Code"))
-        .clang_arg(format!("-I{RDKIT_ROOT}/Code/GraphMol"))
-        .clang_arg("-std=c++17")
-        .allowlist_type("RDKit::RWMol")
-        .opaque_type("RDKit::RWMol")
-        // Tell cargo to invalidate the built crate whenever any of the included
-        // header files changed.
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
-        // Finish the builder and generate the bindings.
         .generate()
-        // Unwrap the Result and panic on failure.
         .expect("Unable to generate bindings");
 
     // Write the bindings to the $OUT_DIR/bindings.rs file.
