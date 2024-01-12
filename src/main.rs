@@ -22,6 +22,8 @@ fn main() {
             let smiles = RDKit_MolToSmiles(mol);
             let s = CStr::from_ptr(smiles);
             writeln!(out, "{}", s.to_str().unwrap()).unwrap();
+            // c++ version took like 400 seconds to run this with -O2
+            // this took about 540 seconds in --release
         }
     }
 }
