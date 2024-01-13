@@ -9,5 +9,5 @@ It's a big mess right now, with some files left from trying to adapt things from
 the other [rdkit-sys](https://github.com/rdkit-rs/rdkit) crate and some from my
 experiments today.
 
-The next step is to compile a Rust version of the `cpp/try.c` example using a
+The next step is to compile a Rust version of the `include/try.c` example using a
 basic SDF reader and `ROMol`s.

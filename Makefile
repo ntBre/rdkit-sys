@@ -1,7 +1,7 @@
-lib := cpp/libshim.so
+lib := include/libshim.so
 
-$(lib): cpp/shim.h cpp/shim.cpp
-	cd cpp && make $(notdir $@)
+$(lib): include/shim.h include/shim.cpp
+	cd include && make $(notdir $@)
 
 run: $(lib)
 	cargo run --release
