@@ -6,7 +6,7 @@ use std::{
 
 use rdkit_sys::{
     RDKit_MolToSmiles, RDKit_create_mol_supplier, RDKit_mol_supplier_at_end,
-    RDKit_mol_supplier_next, ROMol_delete, ROMol_new,
+    RDKit_mol_supplier_next, RDKit_ROMol_delete, RDKit_ROMol_new,
 };
 
 fn main() {
@@ -17,9 +17,10 @@ fn main() {
 
     unsafe {
         let m = RDKit_create_mol_supplier(cpath.as_ptr());
-        let mut mol = ROMol_new();
-        while !RDKit_mol_supplier_at_end(m) {
-            ROMol_delete(mol);
+        let mut mol = RDKit_ROMol_new();
+        let mut count = 0;
+        while !RDKit_mol_supplier_at_end(m) && count < 50 {
+            RDKit_ROMol_delete(mol);
             mol = RDKit_mol_supplier_next(m);
             let smiles = RDKit_MolToSmiles(mol);
             let mut len = 0;
@@ -41,6 +42,7 @@ fn main() {
             writeln!(out, "{}", s.to_str().unwrap()).unwrap();
             // c++ version took like 400 seconds to run this with -O2
             // this took about 540 seconds in --release
+            count += 1;
         }
     }
 }

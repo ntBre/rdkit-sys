@@ -12,8 +12,8 @@ extern "C" {
   bool RDKit_mol_supplier_at_end(RDKit_SDMolSupplier *m);
   RDKit_ROMol *RDKit_mol_supplier_next(RDKit_SDMolSupplier *m);
 
-  RDKit_ROMol *ROMol_new();
-  void ROMol_delete(RDKit_ROMol *mol);
+  RDKit_ROMol *RDKit_ROMol_new();
+  void RDKit_ROMol_delete(RDKit_ROMol *mol);
   void ROMol_reset(RDKit_ROMol *orig, RDKit_ROMol *other);
 
   char *RDKit_MolToSmiles(RDKit_ROMol *mol);

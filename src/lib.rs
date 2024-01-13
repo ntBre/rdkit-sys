@@ -16,9 +16,9 @@ mod tests {
         let cpath = CString::new(path).unwrap();
         unsafe {
             let m = RDKit_create_mol_supplier(cpath.as_ptr());
-            let mut mol = ROMol_new();
+            let mut mol = RDKit_ROMol_new();
             while !RDKit_mol_supplier_at_end(m) {
-                ROMol_delete(mol);
+                RDKit_ROMol_delete(mol);
                 mol = RDKit_mol_supplier_next(m);
                 let smiles = RDKit_MolToSmiles(mol);
                 let s = CStr::from_ptr(smiles);

@@ -30,12 +30,12 @@ extern "C" {
 	return reinterpret_cast<RDKit_ROMol*>(s->next());
   }
 
-  RDKit_ROMol *ROMol_new() {
+  RDKit_ROMol *RDKit_ROMol_new() {
 	ROMol *mol = new ROMol();
 	return reinterpret_cast<RDKit_ROMol*>(mol);
   }
 
-  void ROMol_delete(RDKit_ROMol *mol) {
+  void RDKit_ROMol_delete(RDKit_ROMol *mol) {
 	ROMol *m = reinterpret_cast<ROMol*>(mol);
 	delete m;
   }
