@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stddef.h>
 
 typedef struct RDKit_SDMolSupplier RDKit_SDMolSupplier;
 typedef struct RDKit_ROMol RDKit_ROMol;
@@ -16,6 +17,8 @@ extern "C" {
   void ROMol_reset(RDKit_ROMol *orig, RDKit_ROMol *other);
 
   char *RDKit_MolToSmiles(RDKit_ROMol *mol);
+
+  int *find_smarts_matches(RDKit_ROMol *rdmol, const char *smarts, size_t *len, size_t *pair_size);
 
 #ifdef __cplusplus
 }
