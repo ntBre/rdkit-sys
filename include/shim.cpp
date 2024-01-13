@@ -96,10 +96,3 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-// RDKit::SDMolSupplier *RDKit_create_mol_supplier(void) {
-//   std::string input_file = "chembl_33.sdf";
-//   RDKit::SDMolSupplier *mol_supplier = new RDKit::SDMolSupplier(input_file, true);
-//   return mol_supplier;
-// }
-

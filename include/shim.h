@@ -23,5 +23,3 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-/* RDKit::SDMolSupplier RDKit_create_mol_supplier(const char *filename); */
