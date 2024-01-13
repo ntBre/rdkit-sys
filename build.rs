@@ -14,7 +14,9 @@ fn main() {
     println!("cargo:rustc-link-lib=RDKitFileParsers");
     println!("cargo:rustc-link-lib=shim");
 
-    println!("cargo:rustc-env=LD_LIBRARY_PATH=./include:{rdkit_root}/build/lib");
+    println!(
+        "cargo:rustc-env=LD_LIBRARY_PATH=./include:{rdkit_root}/build/lib"
+    );
 
     println!("cargo:rerun-if-changed=wrapper.h");
     println!("cargo:rerun-if-env-changed=RDROOT");

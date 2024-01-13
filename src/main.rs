@@ -5,8 +5,9 @@ use std::{
 };
 
 use rdkit_sys::{
-    RDKit_MolToSmiles, RDKit_create_mol_supplier, RDKit_mol_supplier_at_end,
-    RDKit_mol_supplier_next, RDKit_ROMol_delete, RDKit_ROMol_new,
+    RDKit_MolToSmiles, RDKit_ROMol_delete, RDKit_ROMol_new,
+    RDKit_create_mol_supplier, RDKit_mol_supplier_at_end,
+    RDKit_mol_supplier_next,
 };
 
 fn main() {
