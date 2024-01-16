@@ -7,7 +7,10 @@ fn main() {
 
     // Tell cargo to look for shared libraries in the specified directory
     println!("cargo:rustc-link-search={rdkit_root}/build/lib");
-    println!("cargo:rustc-link-search=./include");
+
+    let include = std::fs::canonicalize("./include").unwrap();
+    let include = include.display();
+    println!("cargo:rustc-link-search={include}");
 
     println!("cargo:rustc-link-lib=RDKitGraphMol");
     println!("cargo:rustc-link-lib=RDKitSmilesParse");
@@ -15,7 +18,7 @@ fn main() {
     println!("cargo:rustc-link-lib=shim");
 
     println!(
-        "cargo:rustc-env=LD_LIBRARY_PATH=./include:{rdkit_root}/build/lib"
+        "cargo:rustc-env=LD_LIBRARY_PATH={include}:{rdkit_root}/build/lib"
     );
 
     println!("cargo:rerun-if-changed=wrapper.h");
