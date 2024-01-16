@@ -15,7 +15,6 @@ RDKit_ROMol *RDKit_mol_supplier_next(RDKit_SDMolSupplier *m);
 
 RDKit_ROMol *RDKit_ROMol_new();
 void RDKit_ROMol_delete(RDKit_ROMol *mol);
-void ROMol_reset(RDKit_ROMol *orig, RDKit_ROMol *other);
 
 RDKit_ROMol *RDKit_SmilesToMol(const char *smiles);
 char *RDKit_MolToSmiles(RDKit_ROMol *mol);
