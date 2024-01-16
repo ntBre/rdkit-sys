@@ -9,6 +9,7 @@ extern "C" {
 #endif
 
 RDKit_SDMolSupplier *RDKit_create_mol_supplier(const char *filename);
+void RDKit_delete_mol_supplier(RDKit_SDMolSupplier *m);
 bool RDKit_mol_supplier_at_end(RDKit_SDMolSupplier *m);
 RDKit_ROMol *RDKit_mol_supplier_next(RDKit_SDMolSupplier *m);
 

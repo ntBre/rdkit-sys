@@ -19,6 +19,10 @@ RDKit_SDMolSupplier *RDKit_create_mol_supplier(const char *filename) {
   return reinterpret_cast<RDKit_SDMolSupplier *>(mol_supplier);
 }
 
+void RDKit_delete_mol_supplier(RDKit_SDMolSupplier *m) {
+  delete reinterpret_cast<SDMolSupplier *>(m);
+}
+
 bool RDKit_mol_supplier_at_end(RDKit_SDMolSupplier *m) {
   SDMolSupplier *s = reinterpret_cast<SDMolSupplier *>(m);
   return s->atEnd();
