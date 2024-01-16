@@ -1,13 +1,17 @@
 #include <GraphMol/Atom.h>
 #include <GraphMol/FileParsers/MolSupplier.h>
 #include <GraphMol/GraphMol.h>
+#include <GraphMol/MolOps.h>
 #include <GraphMol/SmilesParse/SmilesParse.h>
 #include <GraphMol/SmilesParse/SmilesWrite.h>
 #include <GraphMol/Substruct/SubstructMatch.h>
 
+#include <assert.h>
+
 #include "shim.h"
 
 using namespace RDKit;
+using namespace RDKit::MolOps;
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,6 +45,13 @@ RDKit_ROMol *RDKit_ROMol_new() {
 void RDKit_ROMol_delete(RDKit_ROMol *mol) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   delete m;
+}
+
+void RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops) {
+  RWMol *m = reinterpret_cast<RWMol *>(mol);
+  unsigned int failed;
+  sanitizeMol(*m, failed, ops);
+  assert(failed == 0);
 }
 
 RDKit_ROMol *RDKit_SmilesToMol(const char *smiles) {
