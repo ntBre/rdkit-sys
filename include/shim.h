@@ -16,7 +16,11 @@ RDKit_ROMol *RDKit_mol_supplier_next(RDKit_SDMolSupplier *m);
 RDKit_ROMol *RDKit_ROMol_new();
 void RDKit_ROMol_delete(RDKit_ROMol *mol);
 
+// MolOps
 void RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops);
+void RDKit_SetAromaticity(RDKit_ROMol *mol, unsigned int model);
+void RDKit_AssignStereochemistry(RDKit_ROMol *mol);
+void RDKit_AddHs(RDKit_ROMol *mol);
 
 RDKit_ROMol *RDKit_SmilesToMol(const char *smiles);
 char *RDKit_MolToSmiles(RDKit_ROMol *mol);

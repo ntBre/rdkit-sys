@@ -54,6 +54,22 @@ void RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops) {
   assert(failed == 0);
 }
 
+void RDKit_SetAromaticity(RDKit_ROMol *mol, unsigned int model) {
+  RWMol *m = reinterpret_cast<RWMol *>(mol);
+  AromaticityModel modl = static_cast<AromaticityModel>(model);
+  setAromaticity(*m, modl);
+}
+
+void RDKit_AssignStereochemistry(RDKit_ROMol *mol) {
+  ROMol *m = reinterpret_cast<ROMol *>(mol);
+  assignStereochemistry(*m);
+}
+
+void RDKit_AddHs(RDKit_ROMol *mol) {
+  RWMol *m = reinterpret_cast<RWMol *>(mol);
+  addHs(*m);
+}
+
 RDKit_ROMol *RDKit_SmilesToMol(const char *smiles) {
   return reinterpret_cast<RDKit_ROMol *>(SmilesToMol(smiles));
 }
