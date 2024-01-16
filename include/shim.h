@@ -17,6 +17,7 @@ RDKit_ROMol *RDKit_ROMol_new();
 void RDKit_ROMol_delete(RDKit_ROMol *mol);
 void ROMol_reset(RDKit_ROMol *orig, RDKit_ROMol *other);
 
+RDKit_ROMol *RDKit_SmilesToMol(const char *smiles);
 char *RDKit_MolToSmiles(RDKit_ROMol *mol);
 
 int *find_smarts_matches(RDKit_ROMol *rdmol, const char *smarts, size_t *len,

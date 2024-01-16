@@ -43,6 +43,10 @@ void RDKit_ROMol_delete(RDKit_ROMol *mol) {
   delete m;
 }
 
+RDKit_ROMol *RDKit_SmilesToMol(const char *smiles) {
+  return reinterpret_cast<RDKit_ROMol *>(SmilesToMol(smiles));
+}
+
 char *RDKit_MolToSmiles(RDKit_ROMol *mol) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   std::string s = MolToSmiles(*m);
