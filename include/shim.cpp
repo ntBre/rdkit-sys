@@ -87,7 +87,8 @@ char *RDKit_MolToSmiles(RDKit_ROMol *mol) {
 int *find_smarts_matches(RDKit_ROMol *rdmol, const char *smarts, size_t *len,
                          size_t *pair_size) {
   ROMol *mol = reinterpret_cast<ROMol *>(rdmol);
-  RDKit::RWMol *qmol = RDKit::SmartsToMol(smarts);
+  std::unique_ptr<RDKit::RWMol> qmol =
+      std::unique_ptr<RWMol>(RDKit::SmartsToMol(smarts));
   // ordered map so we can avoid sorting later
   // this looks exactly like what the python does
   // http://www.rdkit.org/docs/GettingStartedInC%2B%2B.html#atom-map-indices-in-smarts
