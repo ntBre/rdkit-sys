@@ -1,9 +1,10 @@
 RDROOT := /home/brent/omsf/clone/rdkit
 
 boost := $(addprefix -lboost_,system serialization iostreams)
-rdkit := $(addprefix -lRDKit,GraphMol SmilesParse FileParsers)
+rdkit := $(addprefix -lRDKit,GraphMol SmilesParse FileParsers Fingerprints)
 
-CPPFLAGS += -I$(RDROOT)/Code -Wall -Wextra -pedantic -O2
+CPPFLAGS += -I$(RDROOT)/Code -I$(RDROOT)/Code/DataStructs -Wall -Wextra	\
+			-pedantic -O2
 LDFLAGS += -L$(RDROOT)/build/lib $(boost) $(rdkit)
 
 libshim.so: shim.h shim.cpp

@@ -6,6 +6,7 @@
 #include <GraphMol/SmilesParse/SmilesParse.h>
 #include <GraphMol/SmilesParse/SmilesWrite.h>
 #include <GraphMol/Substruct/SubstructMatch.h>
+#include <SparseIntVect.h>
 
 #include <assert.h>
 
@@ -169,15 +170,16 @@ int *find_smarts_matches_mol(RDKit_ROMol *rdmol, RDKit_ROMol *smarts,
   return ret;
 }
 
-uint32_t *RD(MorganFingerprint)(RD(ROMol) * mol, unsigned int radius,
-                                size_t *len) {
+Pair *RD(MorganFingerprint)(RD(ROMol) * mol, unsigned int radius, size_t *len) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   SparseIntVect<uint32_t> *svec = getFingerprint(*m, radius);
-  *len = svec->getLength();
-  uint32_t *ret = (uint32_t *)malloc(*len * sizeof(uint32_t));
+  std::map<unsigned int, int> st = svec->getNonzeroElements();
+  size_t i = 0;
+  *len = st.size();
+  Pair *ret = (Pair *)malloc(*len * sizeof(Pair));
   assert(ret != NULL);
-  for (size_t i = 0; i < *len; ++i) {
-    ret[i] = svec->getVal(i);
+  for (auto &[idx, value] : st) {
+    ret[i++] = Pair{idx, value};
   }
   return ret;
 }
