@@ -1,9 +1,15 @@
 use std::env;
 use std::path::PathBuf;
+use std::process::Command;
 
 fn main() {
     let rdkit_root = std::env::var("RDROOT")
         .unwrap_or_else(|_| "/home/brent/omsf/clone/rdkit".to_owned());
+
+    Command::new("make")
+        .arg("include/libshim.so")
+        .output()
+        .unwrap();
 
     // Tell cargo to look for shared libraries in the specified directory
     println!("cargo:rustc-link-search={rdkit_root}/build/lib");
