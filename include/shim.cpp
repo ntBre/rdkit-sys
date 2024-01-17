@@ -1,5 +1,6 @@
 #include <GraphMol/Atom.h>
 #include <GraphMol/FileParsers/MolSupplier.h>
+#include <GraphMol/Fingerprints/MorganFingerprints.h>
 #include <GraphMol/GraphMol.h>
 #include <GraphMol/MolOps.h>
 #include <GraphMol/SmilesParse/SmilesParse.h>
@@ -12,6 +13,7 @@
 
 using namespace RDKit;
 using namespace RDKit::MolOps;
+using namespace RDKit::MorganFingerprints;
 
 #ifdef __cplusplus
 extern "C" {
@@ -163,6 +165,19 @@ int *find_smarts_matches_mol(RDKit_ROMol *rdmol, RDKit_ROMol *smarts,
         ret[r++] = res[i][map_list[j]].second;
       }
     }
+  }
+  return ret;
+}
+
+uint32_t *RD(MorganFingerprint)(RD(ROMol) * mol, unsigned int radius,
+                                size_t *len) {
+  ROMol *m = reinterpret_cast<ROMol *>(mol);
+  SparseIntVect<uint32_t> *svec = getFingerprint(*m, radius);
+  *len = svec->getLength();
+  uint32_t *ret = (uint32_t *)malloc(*len * sizeof(uint32_t));
+  assert(ret != NULL);
+  for (size_t i = 0; i < *len; ++i) {
+    ret[i] = svec->getVal(i);
   }
   return ret;
 }

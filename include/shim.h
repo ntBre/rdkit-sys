@@ -1,6 +1,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#define RD(name) RDKit_##name
+
 typedef struct RDKit_SDMolSupplier RDKit_SDMolSupplier;
 typedef struct RDKit_ROMol RDKit_ROMol;
 
@@ -30,6 +32,9 @@ int *find_smarts_matches(RDKit_ROMol *rdmol, const char *smarts, size_t *len,
                          size_t *pair_size);
 int *find_smarts_matches_mol(RDKit_ROMol *rdmol, RDKit_ROMol *smarts,
                              size_t *len, size_t *pair_size);
+
+uint32_t *RD(MorganFingerprint)(RD(ROMol) * mol, unsigned int radius,
+                                size_t *len);
 
 #ifdef __cplusplus
 }
