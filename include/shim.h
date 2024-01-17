@@ -23,10 +23,13 @@ void RDKit_AssignStereochemistry(RDKit_ROMol *mol);
 void RDKit_AddHs(RDKit_ROMol *mol);
 
 RDKit_ROMol *RDKit_SmilesToMol(const char *smiles);
+RDKit_ROMol *RDKit_SmartsToMol(const char *smarts);
 char *RDKit_MolToSmiles(RDKit_ROMol *mol);
 
 int *find_smarts_matches(RDKit_ROMol *rdmol, const char *smarts, size_t *len,
                          size_t *pair_size);
+int *find_smarts_matches_mol(RDKit_ROMol *rdmol, RDKit_ROMol *smarts,
+                             size_t *len, size_t *pair_size);
 
 #ifdef __cplusplus
 }

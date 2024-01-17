@@ -74,6 +74,10 @@ RDKit_ROMol *RDKit_SmilesToMol(const char *smiles) {
   return reinterpret_cast<RDKit_ROMol *>(SmilesToMol(smiles));
 }
 
+RDKit_ROMol *RDKit_SmartsToMol(const char *smarts) {
+  return reinterpret_cast<RDKit_ROMol *>(SmartsToMol(smarts));
+}
+
 char *RDKit_MolToSmiles(RDKit_ROMol *mol) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   std::string s = MolToSmiles(*m);
@@ -89,6 +93,49 @@ int *find_smarts_matches(RDKit_ROMol *rdmol, const char *smarts, size_t *len,
   ROMol *mol = reinterpret_cast<ROMol *>(rdmol);
   std::unique_ptr<RDKit::RWMol> qmol =
       std::unique_ptr<RWMol>(RDKit::SmartsToMol(smarts));
+  // ordered map so we can avoid sorting later
+  // this looks exactly like what the python does
+  // http://www.rdkit.org/docs/GettingStartedInC%2B%2B.html#atom-map-indices-in-smarts
+  std::map<int, unsigned int> idx_map;
+  for (auto atom : qmol->atoms()) {
+    auto smirks_index = atom->getAtomMapNum();
+    if (smirks_index) {
+      idx_map[smirks_index - 1] = atom->getIdx();
+    }
+  }
+  std::vector<int> map_list;
+  for (const auto &[key, value] : idx_map) {
+    map_list.push_back(value);
+  }
+
+  *pair_size = map_list.size();
+
+  std::vector<RDKit::MatchVectType> res;
+  RDKit::SubstructMatchParameters params;
+  params.useChirality = true;
+  params.maxMatches = UINT_MAX;
+  params.uniquify = false;
+  size_t r = 0;
+  int *ret = NULL;
+  if (RDKit::SubstructMatch(*mol, *qmol, res, &params)) {
+    *len = res.size() * map_list.size();
+    ret = (int *)malloc(*len * sizeof(int));
+    if (ret == NULL) {
+      exit(1);
+    }
+    for (size_t i = 0; i < res.size(); ++i) {
+      for (size_t j = 0; j < map_list.size(); ++j) {
+        ret[r++] = res[i][map_list[j]].second;
+      }
+    }
+  }
+  return ret;
+}
+
+int *find_smarts_matches_mol(RDKit_ROMol *rdmol, RDKit_ROMol *smarts,
+                             size_t *len, size_t *pair_size) {
+  ROMol *mol = reinterpret_cast<ROMol *>(rdmol);
+  RWMol *qmol = reinterpret_cast<RWMol *>(smarts);
   // ordered map so we can avoid sorting later
   // this looks exactly like what the python does
   // http://www.rdkit.org/docs/GettingStartedInC%2B%2B.html#atom-map-indices-in-smarts
