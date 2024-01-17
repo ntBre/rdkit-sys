@@ -7,4 +7,4 @@ CPPFLAGS += -I$(RDROOT)/Code -Wall -Wextra -pedantic -O2
 LDFLAGS += -L$(RDROOT)/build/lib $(boost) $(rdkit)
 
 libshim.so: shim.h shim.cpp
-	g++ -fPIC -shared -o $@ shim.cpp $(CPPFLAGS) $(LDFLAGS)
+	g++  $(CPPFLAGS) $(LDFLAGS) -c shim.cpp -o shim.o
