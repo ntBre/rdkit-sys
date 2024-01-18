@@ -173,6 +173,7 @@ int *find_smarts_matches_mol(RDKit_ROMol *rdmol, RDKit_ROMol *smarts,
 Pair *RD(MorganFingerprint)(RD(ROMol) * mol, unsigned int radius, size_t *len) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   SparseIntVect<uint32_t> *svec = getFingerprint(*m, radius);
+  // TODO pretty sure I'm supposed to delete svec
   std::map<unsigned int, int> st = svec->getNonzeroElements();
   size_t i = 0;
   *len = st.size();
@@ -185,7 +186,7 @@ Pair *RD(MorganFingerprint)(RD(ROMol) * mol, unsigned int radius, size_t *len) {
 }
 
 void RD(MorganFingerprintBitVector)(RD(ROMol) * mol, unsigned int radius,
-                                    size_t len, size_t *buf) {
+                                    size_t len, bool *buf) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   ExplicitBitVect *svec = getFingerprintAsBitVect(*m, radius, len);
   for (size_t i = 0; i < len; ++i) {
