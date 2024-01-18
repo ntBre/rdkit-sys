@@ -41,7 +41,7 @@ int *find_smarts_matches_mol(RDKit_ROMol *rdmol, RDKit_ROMol *smarts,
 
 Pair *RD(MorganFingerprint)(RD(ROMol) * mol, unsigned int radius, size_t *len);
 void RD(MorganFingerprintBitVector)(RD(ROMol) * mol, unsigned int radius,
-                                    size_t len, size_t *buf);
+                                    size_t len, bool *buf);
 
 #ifdef __cplusplus
 }

@@ -185,7 +185,7 @@ Pair *RD(MorganFingerprint)(RD(ROMol) * mol, unsigned int radius, size_t *len) {
 }
 
 void RD(MorganFingerprintBitVector)(RD(ROMol) * mol, unsigned int radius,
-                                    size_t len, size_t *buf) {
+                                    size_t len, bool *buf) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   ExplicitBitVect *svec = getFingerprintAsBitVect(*m, radius, len);
   for (size_t i = 0; i < len; ++i) {
