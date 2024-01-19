@@ -4,3 +4,5 @@
 *.so
 /cpp/try
 /out.smiles
+testing/draw
+/testing/mol.html
