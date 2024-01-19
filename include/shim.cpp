@@ -57,11 +57,11 @@ unsigned int RD(ROMol_getNumAtoms)(RD(ROMol) * mol) {
   return reinterpret_cast<ROMol *>(mol)->getNumAtoms();
 }
 
-void RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops) {
+unsigned int RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops) {
   RWMol *m = reinterpret_cast<RWMol *>(mol);
   unsigned int failed;
   sanitizeMol(*m, failed, ops);
-  assert(failed == 0);
+  return failed;
 }
 
 void RDKit_SetAromaticity(RDKit_ROMol *mol, unsigned int model) {
@@ -100,7 +100,9 @@ char *RD(MolToInchiKey)(RD(ROMol) * mol) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   ExtraInchiReturnValues rv;
   std::string inchi = MolToInchi(*m, rv);
-  assert(rv.returnCode == 0);
+  if (rv.returnCode != 0) {
+    return NULL;
+  }
   std::string inchi_key = InchiToInchiKey(inchi);
   char *ret = new char[inchi_key.size() + 1];
   strcpy(ret, inchi_key.c_str());

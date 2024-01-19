@@ -28,7 +28,7 @@ void RDKit_ROMol_delete(RDKit_ROMol *mol);
 unsigned int RD(ROMol_getNumAtoms)(RD(ROMol) * mol);
 
 // MolOps
-void RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops);
+unsigned int RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops);
 void RDKit_SetAromaticity(RDKit_ROMol *mol, unsigned int model);
 void RDKit_AssignStereochemistry(RDKit_ROMol *mol);
 void RDKit_AddHs(RDKit_ROMol *mol);
