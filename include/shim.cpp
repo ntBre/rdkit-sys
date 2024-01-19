@@ -9,6 +9,7 @@
 #include <GraphMol/SmilesParse/SmilesWrite.h>
 #include <GraphMol/Substruct/SubstructMatch.h>
 #include <SparseIntVect.h>
+#include <inchi.h>
 
 #include <assert.h>
 
@@ -92,6 +93,17 @@ char *RDKit_MolToSmiles(RDKit_ROMol *mol) {
   std::string s = MolToSmiles(*m);
   char *ret = new char[s.size() + 1];
   strcpy(ret, s.c_str());
+  return ret;
+}
+
+char *RD(MolToInchiKey)(RD(ROMol) * mol) {
+  ROMol *m = reinterpret_cast<ROMol *>(mol);
+  ExtraInchiReturnValues rv;
+  std::string inchi = MolToInchi(*m, rv);
+  assert(rv.returnCode == 0);
+  std::string inchi_key = InchiToInchiKey(inchi);
+  char *ret = new char[inchi_key.size() + 1];
+  strcpy(ret, inchi_key.c_str());
   return ret;
 }
 
