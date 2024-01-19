@@ -23,6 +23,7 @@ RDKit_ROMol *RDKit_mol_supplier_next(RDKit_SDMolSupplier *m);
 
 RDKit_ROMol *RDKit_ROMol_new();
 void RDKit_ROMol_delete(RDKit_ROMol *mol);
+unsigned int RD(ROMol_getNumAtoms)(RD(ROMol) * mol);
 
 // MolOps
 void RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops);

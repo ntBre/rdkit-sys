@@ -52,6 +52,10 @@ void RDKit_ROMol_delete(RDKit_ROMol *mol) {
   delete m;
 }
 
+unsigned int RD(ROMol_getNumAtoms)(RD(ROMol) * mol) {
+  return reinterpret_cast<ROMol *>(mol)->getNumAtoms();
+}
+
 void RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops) {
   RWMol *m = reinterpret_cast<RWMol *>(mol);
   unsigned int failed;
