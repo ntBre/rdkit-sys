@@ -100,9 +100,6 @@ char *RD(MolToInchiKey)(RD(ROMol) * mol) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   ExtraInchiReturnValues rv;
   std::string inchi = MolToInchi(*m, rv);
-  if (rv.returnCode != 0) {
-    return NULL;
-  }
   std::string inchi_key = InchiToInchiKey(inchi);
   char *ret = new char[inchi_key.size() + 1];
   strcpy(ret, inchi_key.c_str());
