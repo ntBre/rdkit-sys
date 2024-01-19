@@ -176,6 +176,7 @@ char *RD(MolDrawSVG)(RD(ROMol) * mol, int width, int height, const char *legend,
 
   MolDraw2DSVG drawer = MolDraw2DSVG(width, height);
   MolDraw2DUtils::prepareAndDrawMolecule(drawer, *m, leg, &highlight_atoms);
+  drawer.finishDrawing();
   std::string svg = drawer.getDrawingText();
 
   char *ret = new char[svg.size() + 1];

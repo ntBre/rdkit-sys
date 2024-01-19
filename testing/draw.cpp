@@ -25,6 +25,7 @@ int main() {
   MolDraw2DSVG drawer = MolDraw2DSVG(width, height);
   MolDraw2DUtils::prepareAndDrawMolecule(drawer, *mol, legend,
                                          &highlight_atoms);
+  drawer.finishDrawing();
   string svg = drawer.getDrawingText();
 
   output << svg;
