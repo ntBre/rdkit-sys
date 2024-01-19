@@ -43,6 +43,9 @@ Pair *RD(MorganFingerprint)(RD(ROMol) * mol, unsigned int radius, size_t *len);
 void RD(MorganFingerprintBitVector)(RD(ROMol) * mol, unsigned int radius,
                                     size_t len, bool *buf);
 
+char *RD(MolDrawSVG)(RD(ROMol) * mol, int width, int height, const char *legend,
+                     const int *hl_atoms, size_t hl_atom_count);
+
 #ifdef __cplusplus
 }
 #endif

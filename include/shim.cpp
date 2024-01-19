@@ -2,6 +2,8 @@
 #include <GraphMol/FileParsers/MolSupplier.h>
 #include <GraphMol/Fingerprints/MorganFingerprints.h>
 #include <GraphMol/GraphMol.h>
+#include <GraphMol/MolDraw2D/MolDraw2DSVG.h>
+#include <GraphMol/MolDraw2D/MolDraw2DUtils.h>
 #include <GraphMol/MolOps.h>
 #include <GraphMol/SmilesParse/SmilesParse.h>
 #include <GraphMol/SmilesParse/SmilesWrite.h>
@@ -160,6 +162,25 @@ void RD(MorganFingerprintBitVector)(RD(ROMol) * mol, unsigned int radius,
     buf[i] = svec->getBit(i);
   }
   delete svec;
+}
+
+char *RD(MolDrawSVG)(RD(ROMol) * mol, int width, int height, const char *legend,
+                     const int *hl_atoms, size_t hl_atom_count) {
+  ROMol *m = reinterpret_cast<ROMol *>(mol);
+  // convert to compatible types
+  std::vector<int> highlight_atoms;
+  for (size_t i = 0; i < hl_atom_count; ++i) {
+    highlight_atoms.push_back(hl_atoms[i]);
+  }
+  std::string leg(legend);
+
+  MolDraw2DSVG drawer = MolDraw2DSVG(width, height);
+  MolDraw2DUtils::prepareAndDrawMolecule(drawer, *m, leg, &highlight_atoms);
+  std::string svg = drawer.getDrawingText();
+
+  char *ret = new char[svg.size() + 1];
+  strcpy(ret, svg.c_str());
+  return ret;
 }
 
 #ifdef __cplusplus
