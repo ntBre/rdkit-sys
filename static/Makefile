@@ -10,14 +10,13 @@ dirs := $(addprefix -L$(CODE)/,GraphMol GraphMol/SmilesParse RDGeneral RDBoost D
 
 ext :=  $(addprefix -L$(EXTERNAL)/,RingFamilies)
 
-ars := $(RDROOT)/build/External/RingFamilies/libRDKitRingDecomposerLib_static.a	\
+ars := $(EXTERNAL)/RingFamilies/libRDKitRingDecomposerLib_static.a	\
 $(addprefix $(CODE)/,RDGeneral/libRDKitRDGeneral_static.a			\
 DataStructs/libRDKitDataStructs_static.a GraphMol/libRDKitGraphMol_static.a		\
 GraphMol/SmilesParse/libRDKitSmilesParse_static.a								\
 RDBoost/libRDKitRDBoost_static.a DataStructs/libRDKitDataStructs_static.a)
 
 CPPFLAGS += -I$(RDROOT)/Code $(ars)
-
 
 LDFLAGS += -static $(dirs) $(ext) $(libs)
 
