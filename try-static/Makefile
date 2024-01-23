@@ -31,5 +31,8 @@ run: main
 wrapper.o: wrapper.cpp
 	g++ -c -o $@ $^ $(CPPFLAGS)
 
-try: try.o wrapper.o
-	gcc -o $@ $^ $(CPPFLAGS) $(LDFLAGS) -lstdc++ -lm
+libwrapper.a: wrapper.o
+	ar rcs $@ $^
+
+try: try.c libwrapper.a
+	gcc -o $@ $< -L. -lwrapper $(CPPFLAGS) $(LDFLAGS) -lstdc++ -lm
