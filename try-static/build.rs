@@ -43,6 +43,18 @@ fn main() {
         panic!("failed to build wrapper.o");
     }
 
+    if !Command::new("ar")
+        .arg("rcs")
+        .arg("/home/brent/Projects/rdkit-sys/try-static/libwrapper.a")
+        .arg("/home/brent/Projects/rdkit-sys/try-static/wrapper.o")
+        .output()
+        .unwrap()
+        .status
+        .success()
+    {
+        panic!("failed to create libwrapper.a");
+    }
+
     panic!();
 
     println!(
@@ -77,18 +89,6 @@ fn main() {
         "RDGeometryLib",
     ] {
         println!("cargo:rustc-link-lib=RDKit{rdlib}_static");
-    }
-
-    if !Command::new("ar")
-        .arg("rcs")
-        .arg("/home/brent/Projects/rdkit-sys/try-static/libwrapper.a")
-        .arg("/home/brent/Projects/rdkit-sys/try-static/wrapper.o")
-        .output()
-        .unwrap()
-        .status
-        .success()
-    {
-        panic!("failed to create libwrapper.a");
     }
 
     let bindings = bindgen::Builder::default()
