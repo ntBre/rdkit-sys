@@ -18,8 +18,6 @@ fn main() {
     // println!("cargo:rerun-if-changed=wrapper.h");
     // println!("cargo:rerun-if-env-changed=RDROOT");
 
-    let headers_path = rdroot.join("Code");
-
     // make wrapper.o:
     //
     // g++ -I/home/brent/omsf/clone/rdkit/Code
@@ -31,15 +29,18 @@ fn main() {
     // /home/brent/omsf/clone/rdkit/build/Code/RDBoost/libRDKitRDBoost_static.a
     // /home/brent/omsf/clone/rdkit/build/Code/DataStructs/libRDKitDataStructs_static.a
     // -c -o wrapper.o wrapper.cpp
-    if !Command::new("g++").arg("-I").arg(headers_path).args([
-        "/home/brent/omsf/clone/rdkit/build/External/RingFamilies/libRDKitRingDecomposerLib_static.a",
-    "/home/brent/omsf/clone/rdkit/build/Code/RDGeneral/libRDKitRDGeneral_static.a",
-        "/home/brent/omsf/clone/rdkit/build/Code/DataStructs/libRDKitDataStructs_static.a",
-    "/home/brent/omsf/clone/rdkit/build/Code/GraphMol/libRDKitGraphMol_static.a",
-        "/home/brent/omsf/clone/rdkit/build/Code/GraphMol/SmilesParse/libRDKitSmilesParse_static.a",
-    "/home/brent/omsf/clone/rdkit/build/Code/RDBoost/libRDKitRDBoost_static.a",
-        "/home/brent/omsf/clone/rdkit/build/Code/DataStructs/libRDKitDataStructs_static.a",
-    ]).arg("-c").arg("-o").arg("wrapper.o").arg("wrapper.cpp").output().unwrap().status.success() {
+    if !Command::new("g++")
+        .arg("-c")
+        .arg("-o")
+        .arg("wrapper.o")
+        .arg("wrapper.cpp")
+        .arg("-I")
+        .arg(rdroot.join("Code"))
+        .output()
+        .unwrap()
+        .status
+        .success()
+    {
         panic!("failed to build wrapper.o");
     }
 
@@ -55,11 +56,33 @@ fn main() {
         panic!("failed to create libwrapper.a");
     }
 
-    panic!();
+    // successful build from Makefile for try.c from libwrapper.a built here:
+    // gcc -o try try.c -L. -lwrapper -I/home/brent/omsf/clone/rdkit/Code
+    // /home/brent/omsf/clone/rdkit/build/External/RingFamilies/libRDKitRingDecomposerLib_static.a
+    // /home/brent/omsf/clone/rdkit/build/Code/RDGeneral/libRDKitRDGeneral_static.a
+    // /home/brent/omsf/clone/rdkit/build/Code/DataStructs/libRDKitDataStructs_static.a
+    // /home/brent/omsf/clone/rdkit/build/Code/GraphMol/libRDKitGraphMol_static.a
+    // /home/brent/omsf/clone/rdkit/build/Code/GraphMol/SmilesParse/libRDKitSmilesParse_static.a
+    // /home/brent/omsf/clone/rdkit/build/Code/RDBoost/libRDKitRDBoost_static.a
+    // /home/brent/omsf/clone/rdkit/build/Code/DataStructs/libRDKitDataStructs_static.a
+    // -static -L/home/brent/omsf/clone/rdkit/build/Code/GraphMol
+    // -L/home/brent/omsf/clone/rdkit/build/Code/GraphMol/SmilesParse
+    // -L/home/brent/omsf/clone/rdkit/build/Code/RDGeneral
+    // -L/home/brent/omsf/clone/rdkit/build/Code/RDBoost
+    // -L/home/brent/omsf/clone/rdkit/build/Code/DataStructs
+    // -L/home/brent/omsf/clone/rdkit/build/Code/Geometry
+    // -L/home/brent/omsf/clone/rdkit/build/External/RingFamilies
+    // -lRDKitGraphMol_static -lRDKitSmilesParse_static -lRDKitRDGeneral_static
+    // -lRDKitRingDecomposerLib_static -lRDKitDataStructs_static
+    // -lRDKitRDGeometryLib_static -lboost_serialization -lstdc++ -lm
 
+    // -L.
     println!(
         "cargo:rustc-link-search=/home/brent/Projects/rdkit-sys/try-static"
     );
+    // -lwrapper
+    println!("cargo:rustc-link-lib=wrapper");
+
     for rddir in [
         "GraphMol",
         "GraphMol/SmilesParse",
@@ -78,7 +101,6 @@ fn main() {
         );
     }
 
-    println!("cargo:rustc-link-lib=wrapper");
     println!("cargo:rustc-link-lib=stdc++");
     for rdlib in [
         "GraphMol",

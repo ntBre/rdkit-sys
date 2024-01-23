@@ -29,10 +29,10 @@ run: main
 	LD_LIBRARY_PATH=/home/brent/omsf/clone/rdkit/build/lib ./main
 
 wrapper.o: wrapper.cpp
-	g++ -c -o $@ $^ $(CPPFLAGS)
+	g++ -c -o $@ $^ -I$(RDROOT)/Code
 
 libwrapper.a: wrapper.o
 	ar rcs $@ $^
 
 try: try.c libwrapper.a
-	gcc -o $@ $< -L. -lwrapper $(CPPFLAGS) $(LDFLAGS) -lstdc++ -lm
+	gcc -o $@ $< -L. -lwrapper $(ars) $(LDFLAGS) -lstdc++ -lm
