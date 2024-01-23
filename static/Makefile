@@ -3,18 +3,20 @@ CODE := $(RDROOT)/build/Code
 EXTERNAL := $(RDROOT)/build/External
 
 boost := -lboost_serialization
-libs := $(addprefix -lRDKit,$(addsuffix _static,GraphMol SmilesParse RDGeneral	\
-RingDecomposerLib DataStructs RDGeometryLib)) $(boost)
+rdlibs := GraphMol SmilesParse RDGeneral RingDecomposerLib DataStructs	\
+          RDGeometryLib
+libs := $(addprefix -lRDKit,$(addsuffix _static,$(rdlibs))) $(boost)
 
-dirs := $(addprefix -L$(CODE)/,GraphMol GraphMol/SmilesParse RDGeneral RDBoost DataStructs Geometry)
+rddirs := GraphMol GraphMol/SmilesParse RDGeneral RDBoost DataStructs Geometry
+dirs := $(addprefix -L$(CODE)/,$(rddirs))
 
 ext :=  $(addprefix -L$(EXTERNAL)/,RingFamilies)
 
-ars := $(EXTERNAL)/RingFamilies/libRDKitRingDecomposerLib_static.a	\
-$(addprefix $(CODE)/,RDGeneral/libRDKitRDGeneral_static.a			\
-DataStructs/libRDKitDataStructs_static.a GraphMol/libRDKitGraphMol_static.a		\
-GraphMol/SmilesParse/libRDKitSmilesParse_static.a								\
-RDBoost/libRDKitRDBoost_static.a DataStructs/libRDKitDataStructs_static.a)
+ars := $(addsuffix _static.a,$(EXTERNAL)/RingFamilies/libRDKitRingDecomposerLib	\
+$(addprefix $(CODE)/,RDGeneral/libRDKitRDGeneral								\
+DataStructs/libRDKitDataStructs GraphMol/libRDKitGraphMol						\
+GraphMol/SmilesParse/libRDKitSmilesParse RDBoost/libRDKitRDBoost				\
+DataStructs/libRDKitDataStructs))
 
 CPPFLAGS += -I$(RDROOT)/Code $(ars)
 
