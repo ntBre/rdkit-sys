@@ -1,15 +1,20 @@
+#![allow(non_upper_case_globals)]
 #![allow(non_camel_case_types)]
-use std::ffi::{c_char, CString};
+#![allow(non_snake_case)]
 
-#[repr(C)]
-struct RDKit_ROMol {
-    _unused: [u8; 0],
-}
+include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+// #![allow(non_camel_case_types)]
+use std::ffi::CString;
 
-extern "C" {
-    fn RDKit_SmilesToMol(smiles: *const c_char) -> *mut RDKit_ROMol;
-    fn RDKit_ROMol_getNumAtoms(mol: *mut RDKit_ROMol) -> usize;
-}
+// #[repr(C)]
+// struct RDKit_ROMol {
+//     _unused: [u8; 0],
+// }
+
+// extern "C" {
+//     fn RDKit_SmilesToMol(smiles: *const c_char) -> *mut RDKit_ROMol;
+//     fn RDKit_ROMol_getNumAtoms(mol: *mut RDKit_ROMol) -> usize;
+// }
 
 fn main() {
     let smiles = "Cc1ccccc1";
