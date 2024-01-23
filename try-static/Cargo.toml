@@ -1,6 +1,5 @@
-workspace = { members = ["try-static"] }
 [package]
-name = "rdkit-sys"
+name = "try-static"
 version = "0.1.0"
 edition = "2021"
 
