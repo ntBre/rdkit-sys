@@ -1,16 +1,17 @@
 RDROOT := /home/brent/omsf/clone/rdkit
+CODE := $(RDROOT)/build/Code
+EXTERNAL := $(RDROOT)/build/External
 
-libs := $(addprefix -lRDKit,GraphMol_static SmilesParse_static RDGeneral_static	\
-RingDecomposerLib_static DataStructs_static) \
--lboost_serialization
+boost := -lboost_serialization
+libs := $(addprefix -lRDKit,$(addsuffix _static,GraphMol SmilesParse RDGeneral	\
+RingDecomposerLib DataStructs RDGeometryLib)) $(boost)
 
-dirs := $(addprefix -L$(RDROOT)/build/Code/,GraphMol GraphMol/SmilesParse	\
-RDGeneral RDBoost DataStructs)
+dirs := $(addprefix -L$(CODE)/,GraphMol GraphMol/SmilesParse RDGeneral RDBoost DataStructs Geometry)
 
-ext :=  $(addprefix -L$(RDROOT)/build/External/,RingFamilies)
+ext :=  $(addprefix -L$(EXTERNAL)/,RingFamilies)
 
 ars := $(RDROOT)/build/External/RingFamilies/libRDKitRingDecomposerLib_static.a	\
-$(addprefix $(RDROOT)/build/Code/,RDGeneral/libRDKitRDGeneral_static.a			\
+$(addprefix $(CODE)/,RDGeneral/libRDKitRDGeneral_static.a			\
 DataStructs/libRDKitDataStructs_static.a GraphMol/libRDKitGraphMol_static.a		\
 GraphMol/SmilesParse/libRDKitSmilesParse_static.a								\
 RDBoost/libRDKitRDBoost_static.a DataStructs/libRDKitDataStructs_static.a)
