@@ -27,3 +27,6 @@ main: main.cpp
 
 run: main
 	LD_LIBRARY_PATH=/home/brent/omsf/clone/rdkit/build/lib ./main
+
+try: try.o wrapper.o
+	gcc -o $@ $^ $(CPPFLAGS) $(LDFLAGS) -lstdc++ -lm

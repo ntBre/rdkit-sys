@@ -2,8 +2,8 @@ the goal of this subdirectory is to figure out how to statically link to RDKit.
 The steps I see are
 
 1. [X] Hello world in C++ with normal, dynamic link
-2. [ ] Hello world in C++ statically linked
-3. [ ] Statically linked C binary
+2. [X] Hello world in C++ statically linked
+3. [X] Statically linked C binary
 4. [ ] Statically linked Rust
 
 There could also be a step 2.5 where I build a dynamically linked C binary, but
