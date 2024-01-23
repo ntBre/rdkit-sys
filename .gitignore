@@ -8,3 +8,10 @@ testing/draw
 /testing/mol.html
 /testing/inchi
 /static/main
+include/libwrapper.a
+include/wrapper.o
+try-static/libwrapper.a
+try-static/main
+try-static/try
+try-static/try.o
+try-static/wrapper.o

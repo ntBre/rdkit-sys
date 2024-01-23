@@ -10,6 +10,16 @@ fn run_cmd(mut cmd: Command) {
 }
 
 fn main() {
+    println!("cargo:rerun-if-env-changed=CONDA_PREFIX");
+
+    let Ok(prefix) = env::var("CONDA_PREFIX") else {
+        eprintln!(
+            "must build inside a conda environment containing openff-toolkit"
+        );
+        std::process::exit(1);
+    };
+    println!("cargo:rustc-env=LD_LIBRARY_PATH={prefix}/lib");
+
     let rdroot = Path::new("/home/brent/omsf/clone/rdkit");
     let code = rdroot.join("build/Code");
     let external = rdroot.join("build/External");
@@ -74,6 +84,7 @@ fn main() {
     // -lwrapper
     println!("cargo:rustc-link-lib=wrapper");
 
+    println!("cargo:rustc-link-search=native=/usr/lib");
     println!("cargo:rustc-link-lib=boost_system");
     println!("cargo:rustc-link-lib=boost_serialization");
     println!("cargo:rustc-link-lib=boost_iostreams");
