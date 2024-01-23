@@ -16,7 +16,7 @@ ars := $(addsuffix _static.a,$(EXTERNAL)/RingFamilies/libRDKitRingDecomposerLib	
 $(addprefix $(CODE)/,RDGeneral/libRDKitRDGeneral								\
 DataStructs/libRDKitDataStructs GraphMol/libRDKitGraphMol						\
 GraphMol/SmilesParse/libRDKitSmilesParse RDBoost/libRDKitRDBoost				\
-DataStructs/libRDKitDataStructs))
+DataStructs/libRDKitDataStructs Geometry/libRDKitRDGeometryLib))
 
 CPPFLAGS += -I$(RDROOT)/Code $(ars)
 
@@ -32,7 +32,7 @@ wrapper.o: wrapper.cpp
 	g++ -c -o $@ $^ -I$(RDROOT)/Code
 
 libwrapper.a: wrapper.o
-	ar rcs $@ $^
+	ar rcs $@ $^ --thin $(ars)
 
 try: try.c libwrapper.a
-	gcc -o $@ $< -L. -lwrapper $(ars) $(LDFLAGS) -lstdc++ -lm
+	gcc -o $@ $< -L. -lwrapper -lboost_serialization -lstdc++ -lm
