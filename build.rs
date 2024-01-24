@@ -3,6 +3,11 @@ use std::path::{Path, PathBuf};
 use std::process::Command;
 
 fn main() {
+    println!("cargo:rerun-if-changed=include/shim.h");
+    println!("cargo:rerun-if-changed=include/shim.cpp");
+    println!("cargo:rerun-if-changed=wrapper.h");
+    println!("cargo:rerun-if-env-changed=RDROOT");
+
     let rdroot = std::env::var("RDROOT")
         .unwrap_or_else(|_| "/home/brent/omsf/clone/rdkit".to_owned());
 
@@ -31,9 +36,6 @@ fn main() {
     println!("cargo:rustc-link-arg=-Wl,-rpath,{rdlibs},-rpath,{include}");
     println!("cargo:rustc-link-search=native={rdlibs}");
     println!("cargo:rustc-link-search=native={include}");
-
-    println!("cargo:rerun-if-changed=wrapper.h");
-    println!("cargo:rerun-if-env-changed=RDROOT");
 
     let bindings = bindgen::Builder::default()
         .header("wrapper.h")
