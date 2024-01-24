@@ -11,6 +11,9 @@
 #include <SparseIntVect.h>
 #include <inchi.h>
 
+#define RDK_BUILD_THREADSAFE_SSS
+#include <GraphMol/FileParsers/MultithreadedSDMolSupplier.h>
+
 #include <assert.h>
 
 #include "shim.h"
@@ -41,6 +44,31 @@ bool RDKit_mol_supplier_at_end(RDKit_SDMolSupplier *m) {
 RDKit_ROMol *RDKit_mol_supplier_next(RDKit_SDMolSupplier *m) {
   SDMolSupplier *s = reinterpret_cast<SDMolSupplier *>(m);
   return reinterpret_cast<RDKit_ROMol *>(s->next());
+}
+
+RD(MultithreadedSDMolSupplier) *
+    RD(MultithreadedSDMolSupplier_new)(const char *filename) {
+  std::string input_file = std::string(filename);
+  MultithreadedSDMolSupplier *mol_supplier =
+      new MultithreadedSDMolSupplier(input_file);
+  return reinterpret_cast<RD(MultithreadedSDMolSupplier) *>(mol_supplier);
+}
+
+bool RD(MultithreadedSDMolSupplier_at_end)(RD(MultithreadedSDMolSupplier) * m) {
+  MultithreadedSDMolSupplier *s =
+      reinterpret_cast<MultithreadedSDMolSupplier *>(m);
+  return s->atEnd();
+}
+
+RD(ROMol) *
+    RD(MultithreadedSDMolSupplier_next)(RD(MultithreadedSDMolSupplier) * m) {
+  MultithreadedSDMolSupplier *s =
+      reinterpret_cast<MultithreadedSDMolSupplier *>(m);
+  return reinterpret_cast<RDKit_ROMol *>(s->next());
+}
+
+void RD(MultithreadedSDMolSupplier_delete)(RD(MultithreadedSDMolSupplier) * m) {
+  delete reinterpret_cast<MultithreadedSDMolSupplier *>(m);
 }
 
 RDKit_ROMol *RDKit_ROMol_new() {

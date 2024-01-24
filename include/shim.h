@@ -5,6 +5,8 @@
 #define RD(name) RDKit_##name
 
 typedef struct RDKit_SDMolSupplier RDKit_SDMolSupplier;
+typedef struct RDKit_MultithreadedSDMolSupplier
+    RDKit_MultithreadedSDMolSupplier;
 typedef struct RDKit_ROMol RDKit_ROMol;
 
 typedef struct {
@@ -21,6 +23,14 @@ RDKit_SDMolSupplier *RDKit_create_mol_supplier(const char *filename);
 void RDKit_delete_mol_supplier(RDKit_SDMolSupplier *m);
 bool RDKit_mol_supplier_at_end(RDKit_SDMolSupplier *m);
 RDKit_ROMol *RDKit_mol_supplier_next(RDKit_SDMolSupplier *m);
+
+// MultithreadedSDMolSupplier
+RDKit_MultithreadedSDMolSupplier *
+    RD(MultithreadedSDMolSupplier_new)(const char *filename);
+bool RD(MultithreadedSDMolSupplier_at_end)(RD(MultithreadedSDMolSupplier) * m);
+RD(ROMol) *
+    RD(MultithreadedSDMolSupplier_next)(RD(MultithreadedSDMolSupplier) * m);
+void RD(MultithreadedSDMolSupplier_delete)(RD(MultithreadedSDMolSupplier) * m);
 
 // ROMol
 RDKit_ROMol *RDKit_ROMol_new();
