@@ -11,4 +11,4 @@ CPPFLAGS += -I$(RDROOT)/Code -I$(RDROOT)/Code/DataStructs	\
 LDFLAGS += -L$(RDROOT)/build/lib $(boost) $(rdkit)
 
 libshim.so: shim.h shim.cpp
-	g++ -fPIC -shared -o $@ shim.cpp $(CPPFLAGS) $(LDFLAGS)
+	g++ -fPIC -shared -o $@ shim.cpp $(CPPFLAGS) $(LDFLAGS) -Wl,-rpath,$(RDROOT)/build/lib

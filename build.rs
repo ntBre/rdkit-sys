@@ -1,10 +1,13 @@
 use std::env;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 fn main() {
     let rdroot = std::env::var("RDROOT")
         .unwrap_or_else(|_| "/home/brent/omsf/clone/rdkit".to_owned());
+
+    let rdlibs = Path::new(&rdroot).join("build/lib").canonicalize().unwrap();
+    let rdlibs = rdlibs.display();
 
     Command::new("make")
         .arg("include/libshim.so")
@@ -13,11 +16,21 @@ fn main() {
 
     let include = std::fs::canonicalize("./include").unwrap();
     let include = include.display();
-    println!("cargo:rustc-link-search={include}");
 
-    println!("cargo:rustc-link-lib=shim");
-
-    println!("cargo:rustc-env=LD_LIBRARY_PATH={include}:{rdroot}/build/lib");
+    for lib in [
+        "GraphMol",
+        "SmilesParse",
+        "FileParsers",
+        "Fingerprints",
+        "MolDraw2D",
+        "RDInchiLib",
+    ] {
+        println!("cargo:rustc-link-lib=dylib=RDKit{lib}");
+    }
+    println!("cargo:rustc-link-lib=dylib=shim");
+    println!("cargo:rustc-link-arg=-Wl,-rpath,{rdlibs},-rpath,{include}");
+    println!("cargo:rustc-link-search=native={rdlibs}");
+    println!("cargo:rustc-link-search=native={include}");
 
     println!("cargo:rerun-if-changed=wrapper.h");
     println!("cargo:rerun-if-env-changed=RDROOT");
