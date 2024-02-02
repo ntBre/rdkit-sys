@@ -65,6 +65,9 @@ char *RD(MolDrawSVG)(RD(ROMol) * mol, int width, int height, const char *legend,
                      const int *hl_atoms, size_t hl_atom_count);
 
 RD(ChemicalReaction) * RD(RxnSmartsToChemicalReaction)(const char *smarts);
+RD(ROMol) * *RD(RunReactants)(RD(ChemicalReaction) * self, RD(ROMol) * reactant,
+                              size_t *len, size_t **inner_lens,
+                              size_t *inner_lens_len);
 
 #ifdef __cplusplus
 }

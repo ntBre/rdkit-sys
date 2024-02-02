@@ -1,4 +1,5 @@
 #include <GraphMol/Atom.h>
+#include <GraphMol/ChemReactions/Reaction.h>
 #include <GraphMol/ChemReactions/ReactionParser.h>
 #include <GraphMol/FileParsers/MolSupplier.h>
 #include <GraphMol/Fingerprints/MorganFingerprints.h>
@@ -246,6 +247,55 @@ RD(ChemicalReaction) * RD(RxnSmartsToChemicalReaction)(const char *smarts) {
   std::string s(smarts);
   return reinterpret_cast<RD(ChemicalReaction) *>(
       RxnSmartsToChemicalReaction(s));
+}
+
+// we're going to take a single reactant for now, I think I have to clone it
+RD(ROMol) * *RD(RunReactants)(RD(ChemicalReaction) * self, RD(ROMol) * reactant,
+                              size_t *len, size_t **inner_lens,
+                              size_t *inner_lens_len) {
+  // creating a shared ptr
+  ROMol *copied_reactant = new ROMol(*reinterpret_cast<ROMol *>(reactant));
+  // // aka ROMOL_SPTR
+  // boost::shared_ptr<ROMol> shared_reactant =
+  // boost::make_shared<ROMol>(&copied_reactant);
+  // // aka MOL_SPTR_VECT
+  std::vector<boost::shared_ptr<ROMol>> reactants;
+  reactants.push_back(ROMOL_SPTR(copied_reactant));
+
+  ChemicalReaction *selff = reinterpret_cast<ChemicalReaction *>(self);
+  std::vector<MOL_SPTR_VECT> result;
+  selff->initReactantMatchers();
+  try {
+    result = selff->runReactants(reactants);
+  } catch (const std::exception &exc) {
+    std::cout << exc.what();
+    exit(1);
+  }
+  *inner_lens_len = result.size();
+  *inner_lens = (size_t *)malloc(result.size() * sizeof(size_t));
+  size_t inner_idx = 0;
+  size_t total_size = 0;
+  for (auto row : result) {
+    (*inner_lens)[inner_idx++] = row.size();
+    total_size += row.size();
+  }
+
+  ROMol **ret = (ROMol **)malloc(total_size * sizeof(size_t));
+
+  size_t idx = 0;
+  for (auto row : result) {
+    for (auto mol : row) {
+      // copy constructor I hope to get rid of shared_ptr
+      ROMol *out_mol = new ROMol(*mol.get());
+      ret[idx++] = out_mol;
+    }
+  }
+
+  // TODO don't actually need this because we can reconstruct from the inner
+  // sizes
+  *len = total_size;
+
+  return reinterpret_cast<RDKit_ROMol **>(ret);
 }
 
 #ifdef __cplusplus
