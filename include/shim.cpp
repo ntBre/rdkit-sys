@@ -1,4 +1,5 @@
 #include <GraphMol/Atom.h>
+#include <GraphMol/ChemReactions/ReactionParser.h>
 #include <GraphMol/FileParsers/MolSupplier.h>
 #include <GraphMol/Fingerprints/MorganFingerprints.h>
 #include <GraphMol/GraphMol.h>
@@ -46,8 +47,13 @@ bool RDKit_mol_supplier_at_end(RDKit_SDMolSupplier *m) {
 }
 
 RDKit_ROMol *RDKit_mol_supplier_next(RDKit_SDMolSupplier *m) {
-  SDMolSupplier *s = reinterpret_cast<SDMolSupplier *>(m);
-  return reinterpret_cast<RDKit_ROMol *>(s->next());
+  try {
+    SDMolSupplier *s = reinterpret_cast<SDMolSupplier *>(m);
+    return reinterpret_cast<RDKit_ROMol *>(s->next());
+  } catch (...) {
+    std::cerr << "Error calling mol_supplier_next" << std::endl;
+    return NULL;
+  }
 }
 
 RD(MultithreadedSDMolSupplier) *
@@ -92,7 +98,12 @@ unsigned int RD(ROMol_getNumAtoms)(RD(ROMol) * mol) {
 unsigned int RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops) {
   RWMol *m = reinterpret_cast<RWMol *>(mol);
   unsigned int failed;
-  sanitizeMol(*m, failed, ops);
+  try {
+    sanitizeMol(*m, failed, ops);
+  } catch (...) {
+    std::cerr << "Error calling sanitize mol" << std::endl;
+    return 1;
+  }
   return failed;
 }
 
@@ -229,6 +240,12 @@ char *RD(MolDrawSVG)(RD(ROMol) * mol, int width, int height, const char *legend,
   char *ret = new char[svg.size() + 1];
   strcpy(ret, svg.c_str());
   return ret;
+}
+
+RD(ChemicalReaction) * RD(RxnSmartsToChemicalReaction)(const char *smarts) {
+  std::string s(smarts);
+  return reinterpret_cast<RD(ChemicalReaction) *>(
+      RxnSmartsToChemicalReaction(s));
 }
 
 #ifdef __cplusplus

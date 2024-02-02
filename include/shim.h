@@ -3,11 +3,13 @@
 #include <stdint.h>
 
 #define RD(name) RDKit_##name
+#define NEWTYPE(name) RDKit_##name RDKit_##name
 
 typedef struct RDKit_SDMolSupplier RDKit_SDMolSupplier;
 typedef struct RDKit_MultithreadedSDMolSupplier
     RDKit_MultithreadedSDMolSupplier;
 typedef struct RDKit_ROMol RDKit_ROMol;
+typedef struct NEWTYPE(ChemicalReaction);
 
 typedef struct {
   unsigned int bit;
@@ -61,6 +63,8 @@ void RD(MorganFingerprintBitVector)(RD(ROMol) * mol, unsigned int radius,
 
 char *RD(MolDrawSVG)(RD(ROMol) * mol, int width, int height, const char *legend,
                      const int *hl_atoms, size_t hl_atom_count);
+
+RD(ChemicalReaction) * RD(RxnSmartsToChemicalReaction)(const char *smarts);
 
 #ifdef __cplusplus
 }
