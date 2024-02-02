@@ -87,6 +87,11 @@ RDKit_ROMol *RDKit_ROMol_new() {
   return reinterpret_cast<RDKit_ROMol *>(mol);
 }
 
+RDKit_ROMol *RDKit_ROMol_copy(RDKit_ROMol *other) {
+  ROMol *mol = new ROMol(*reinterpret_cast<ROMol *>(other));
+  return reinterpret_cast<RDKit_ROMol *>(mol);
+}
+
 void RDKit_ROMol_delete(RDKit_ROMol *mol) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   delete m;

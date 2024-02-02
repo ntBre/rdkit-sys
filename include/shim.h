@@ -37,6 +37,7 @@ void RD(MultithreadedSDMolSupplier_delete)(RD(MultithreadedSDMolSupplier) * m);
 
 // ROMol
 RDKit_ROMol *RDKit_ROMol_new();
+RDKit_ROMol *RDKit_ROMol_copy(RDKit_ROMol *other);
 void RDKit_ROMol_delete(RDKit_ROMol *mol);
 unsigned int RD(ROMol_getNumAtoms)(RD(ROMol) * mol);
 
