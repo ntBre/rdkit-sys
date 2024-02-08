@@ -1,6 +1,7 @@
 #include <GraphMol/Atom.h>
 #include <GraphMol/ChemReactions/Reaction.h>
 #include <GraphMol/ChemReactions/ReactionParser.h>
+#include <GraphMol/ChemTransforms/ChemTransforms.h>
 #include <GraphMol/FileParsers/MolSupplier.h>
 #include <GraphMol/Fingerprints/MorganFingerprints.h>
 #include <GraphMol/GraphMol.h>
@@ -300,6 +301,23 @@ RD(ROMol) * *RD(RunReactants)(RD(ChemicalReaction) * self, RD(ROMol) * reactant,
   // sizes
   *len = total_size;
 
+  return reinterpret_cast<RDKit_ROMol **>(ret);
+}
+
+RD(ROMol) * *RD(ReplaceSubstructs)(RD(ROMol) * mol, RD(ROMol) * query,
+                                   RD(ROMol) * replacement, bool replaceAll,
+                                   size_t *len) {
+  auto mol1 = reinterpret_cast<ROMol *>(mol);
+  auto query1 = reinterpret_cast<ROMol *>(query);
+  auto replacement1 = reinterpret_cast<ROMol *>(replacement);
+  std::vector<ROMOL_SPTR> res =
+      replaceSubstructs(*mol1, *query1, *replacement1, replaceAll);
+  *len = res.size();
+  ROMol **ret = (ROMol **)malloc(*len * sizeof(size_t));
+  size_t idx = 0;
+  for (auto r : res) {
+    ret[idx++] = new ROMol(*r.get());
+  }
   return reinterpret_cast<RDKit_ROMol **>(ret);
 }
 
