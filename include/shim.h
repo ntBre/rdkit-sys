@@ -67,8 +67,8 @@ char *RD(MolDrawSVG)(RD(ROMol) * mol, int width, int height, const char *legend,
 
 RD(ChemicalReaction) * RD(RxnSmartsToChemicalReaction)(const char *smarts);
 RD(ROMol) * *RD(RunReactants)(RD(ChemicalReaction) * self, RD(ROMol) * reactant,
-                              size_t *len, size_t **inner_lens,
-                              size_t *inner_lens_len);
+                              unsigned int numProducts, size_t *len,
+                              size_t **inner_lens, size_t *inner_lens_len);
 
 RD(ROMol) * *RD(ReplaceSubstructs)(RD(ROMol) * mol, RD(ROMol) * query,
                                    RD(ROMol) * replacement, bool replaceAll,

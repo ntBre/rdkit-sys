@@ -255,10 +255,11 @@ RD(ChemicalReaction) * RD(RxnSmartsToChemicalReaction)(const char *smarts) {
       RxnSmartsToChemicalReaction(s));
 }
 
-// we're going to take a single reactant for now, I think I have to clone it
+// we're going to take a single reactant for now, I think I have to clone it.
+// numProducts defaults to 1000 in the original code
 RD(ROMol) * *RD(RunReactants)(RD(ChemicalReaction) * self, RD(ROMol) * reactant,
-                              size_t *len, size_t **inner_lens,
-                              size_t *inner_lens_len) {
+                              unsigned int numProducts, size_t *len,
+                              size_t **inner_lens, size_t *inner_lens_len) {
   // creating a shared ptr
   ROMol *copied_reactant = new ROMol(*reinterpret_cast<ROMol *>(reactant));
   // // aka ROMOL_SPTR
@@ -272,7 +273,7 @@ RD(ROMol) * *RD(RunReactants)(RD(ChemicalReaction) * self, RD(ROMol) * reactant,
   std::vector<MOL_SPTR_VECT> result;
   selff->initReactantMatchers();
   try {
-    result = selff->runReactants(reactants);
+    result = selff->runReactants(reactants, numProducts);
   } catch (const std::exception &exc) {
     std::cout << exc.what();
     exit(1);
