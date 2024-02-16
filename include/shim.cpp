@@ -187,19 +187,22 @@ int *find_smarts_matches_mol(RDKit_ROMol *rdmol, RDKit_ROMol *smarts,
 
   *pair_size = map_list.size();
 
-  std::vector<RDKit::MatchVectType> res;
+  auto params = SubstructMatchParameters();
+  params.uniquify = false;
+  params.useChirality = true;
+  params.maxMatches = UINT_MAX;
   size_t r = 0;
   int *ret = NULL;
-  if (RDKit::SubstructMatch(*mol, *qmol, res)) {
-    *len = res.size() * map_list.size();
-    ret = (int *)malloc(*len * sizeof(int));
-    if (ret == NULL) {
-      exit(1);
-    }
-    for (size_t i = 0; i < res.size(); ++i) {
-      for (size_t j = 0; j < map_list.size(); ++j) {
-        ret[r++] = res[i][map_list[j]].second;
-      }
+  std::vector<RDKit::MatchVectType> res =
+      RDKit::SubstructMatch(*mol, *qmol, params);
+  *len = res.size() * map_list.size();
+  ret = (int *)malloc(*len * sizeof(int));
+  if (ret == NULL) {
+    exit(1);
+  }
+  for (size_t i = 0; i < res.size(); ++i) {
+    for (size_t j = 0; j < map_list.size(); ++j) {
+      ret[r++] = res[i][map_list[j]].second;
     }
   }
   return ret;
