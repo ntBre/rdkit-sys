@@ -31,12 +31,17 @@ extern "C" {
 
 RDKit_SDMolSupplier *RDKit_create_mol_supplier(const char *filename,
                                                bool removeHs) {
-  std::string input_file = std::string(filename);
-  bool sanitize = true; // passing false here caused an exception...
-  bool strictParsing = true;
-  SDMolSupplier *mol_supplier =
-      new SDMolSupplier(input_file, sanitize, removeHs, strictParsing);
-  return reinterpret_cast<RDKit_SDMolSupplier *>(mol_supplier);
+  try {
+    std::string input_file = std::string(filename);
+    bool sanitize = true; // passing false here caused an exception...
+    bool strictParsing = true;
+    SDMolSupplier *mol_supplier =
+        new SDMolSupplier(input_file, sanitize, removeHs, strictParsing);
+    return reinterpret_cast<RDKit_SDMolSupplier *>(mol_supplier);
+  } catch (...) {
+    std::cerr << "Error creating mol_supplier" << std::endl;
+    return NULL;
+  }
 }
 
 void RDKit_delete_mol_supplier(RDKit_SDMolSupplier *m) {
