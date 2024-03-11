@@ -11,7 +11,7 @@ use rdkit_sys::{
 };
 
 fn main() {
-    let path = "/home/brent/omsf/chembl/chembl_33.sdf";
+    let path = "/home/brent/omsf/chembl/data/chembl_33.sdf";
     let cpath = CString::new(path).unwrap();
     let mut out = File::create("out.smiles").unwrap();
     let smarts = CString::new("[#6X4:1]-[#6X4:2]-[#6X4:3]-[#6X4:4]").unwrap();
