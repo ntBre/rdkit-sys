@@ -17,7 +17,7 @@ fn main() {
     let smarts = CString::new("[#6X4:1]-[#6X4:2]-[#6X4:3]-[#6X4:4]").unwrap();
 
     unsafe {
-        let m = RDKit_create_mol_supplier(cpath.as_ptr());
+        let m = RDKit_create_mol_supplier(cpath.as_ptr(), true);
         let mut mol = RDKit_ROMol_new();
         let mut count = 0;
         while !RDKit_mol_supplier_at_end(m) && count < 50 {
