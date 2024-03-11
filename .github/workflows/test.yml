@@ -25,8 +25,8 @@ jobs:
           toolchain: ${{ matrix.toolchain }}
       - name: install rdkit
         run: |
-          sudo apt install libboost-all-dev
-          git clone https://github.com/rdkit/rdkit
+          sudo apt install libboost-all-dev libeigen3-dev
+          git clone --depth 1 https://github.com/rdkit/rdkit
           cd rdkit
           mkdir build
           cd build
