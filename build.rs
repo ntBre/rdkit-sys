@@ -1,6 +1,6 @@
 use std::env;
 use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::process::{exit, Command};
 
 fn main() {
     println!("cargo:rerun-if-changed=include/shim.h");
@@ -18,7 +18,13 @@ fn main() {
         .arg("include/libshim.so")
         .output()
         .unwrap();
-    assert!(output.status.success());
+
+    if !output.status.success() {
+        eprintln!("command failed");
+        eprintln!("stdout: {}", String::from_utf8_lossy(&output.stdout));
+        eprintln!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+        exit(1)
+    }
 
     let include = std::fs::canonicalize("./include").unwrap();
     let include = include.display();
