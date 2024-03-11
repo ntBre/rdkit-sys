@@ -14,10 +14,11 @@ fn main() {
     let rdlibs = Path::new(&rdroot).join("build/lib").canonicalize().unwrap();
     let rdlibs = rdlibs.display();
 
-    Command::new("make")
+    let output = Command::new("make")
         .arg("include/libshim.so")
         .output()
         .unwrap();
+    assert!(output.status.success());
 
     let include = std::fs::canonicalize("./include").unwrap();
     let include = include.display();
