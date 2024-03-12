@@ -15,6 +15,7 @@ fn main() {
     let rdlibs = rdlibs.display();
 
     let output = Command::new("make")
+        .env("RDROOT", rdroot)
         .arg("include/libshim.so")
         .output()
         .unwrap();

@@ -1,4 +1,4 @@
-RDROOT := /home/brent/omsf/clone/rdkit
+RDROOT ?= /home/brent/omsf/clone/rdkit
 
 boost := $(addprefix -lboost_,system serialization iostreams)
 rdkit := $(addprefix -lRDKit,GraphMol SmilesParse FileParsers Fingerprints	\
