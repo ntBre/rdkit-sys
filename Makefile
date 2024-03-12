@@ -6,5 +6,8 @@ $(lib): include/shim.h include/shim.cpp
 run:
 	cargo run --release
 
+test:
+	cargo test -- --include-ignored
+
 clean:
 	cargo clean
