@@ -14,6 +14,8 @@ fn main() {
     let rdlibs = Path::new(&rdroot).join("build/lib").canonicalize().unwrap();
     let rdlibs = rdlibs.display();
 
+    let rdroot = Path::new(&rdroot).canonicalize().unwrap();
+
     let output = Command::new("make")
         .env("RDROOT", rdroot)
         .arg("include/libshim.so")
