@@ -12,10 +12,10 @@ mod tests {
 
     #[test]
     fn one() {
-        let path = "/home/brent/omsf/chembl/chembl_33.sdf";
+        let path = "/home/brent/omsf/chembl/data/chembl_33.sdf";
         let cpath = CString::new(path).unwrap();
         unsafe {
-            let m = RDKit_create_mol_supplier(cpath.as_ptr());
+            let m = RDKit_create_mol_supplier(cpath.as_ptr(), true);
             let mut mol = RDKit_ROMol_new();
             while !RDKit_mol_supplier_at_end(m) {
                 RDKit_ROMol_delete(mol);
@@ -23,6 +23,7 @@ mod tests {
                 let smiles = RDKit_MolToSmiles(mol);
                 let s = CStr::from_ptr(smiles);
                 println!("{}", s.to_str().unwrap());
+                return;
             }
         }
     }
