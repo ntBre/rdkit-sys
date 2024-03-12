@@ -1,3 +1,5 @@
+[![test](https://github.com/ntBre/rdkit-sys/actions/workflows/test.yml/badge.svg)](https://github.com/ntBre/rdkit-sys/actions/workflows/test.yml)
+
 # rdkit-sys
 
 C and Rust wrappers for [RDKit][rdkit]
