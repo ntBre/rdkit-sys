@@ -10,8 +10,9 @@ fn main() {
 
     let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
 
-    let rdroot = std::env::var("RDROOT")
-        .unwrap_or_else(|_| "/home/brent/omsf/clone/rdkit".to_owned());
+    let Ok(rdroot) = std::env::var("RDROOT") else {
+        panic!("rdkit-sys: RDROOT must be set in the environment");
+    };
 
     let rdlibs = Path::new(&rdroot).join("build/lib").canonicalize().unwrap();
     let rdlibs = rdlibs.display();
