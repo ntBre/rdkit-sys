@@ -11,6 +11,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[ignore]
     fn one() {
         let path = "/home/brent/omsf/chembl/data/chembl_33.sdf";
         let cpath = CString::new(path).unwrap();
