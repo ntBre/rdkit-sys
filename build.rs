@@ -14,8 +14,20 @@ fn main() {
         panic!("rdkit-sys: RDROOT must be set in the environment");
     };
 
-    let Ok(rdlibs) = Path::new(&rdroot).join("build/lib").canonicalize() else {
-        panic!("failed to canonicalize rdroot: {rdroot:?}");
+    let rdlibs = match Path::new(&rdroot).join("build/lib").canonicalize() {
+        Ok(rdlibs) => rdlibs,
+        Err(e) => {
+            let path = Path::new(&rdroot);
+            println!("path: {path:?} exists: {}", path.exists());
+            println!("path: {path:?} is a directory: {}", path.is_dir());
+            println!("path: {path:?} is absolute: {}", path.is_absolute());
+            let path = path.join("build").join("lib");
+            println!("path: {path:?} exists: {}", path.exists());
+            println!("path: {path:?} is a directory: {}", path.is_dir());
+            println!("path: {path:?} is absolute: {}", path.is_absolute());
+            println!("canonical path again: {:?}", path.canonicalize());
+            panic!("failed to canonicalize rdroot: {rdroot:?} with {e:?}")
+        }
     };
     let rdlibs = rdlibs.display();
 
