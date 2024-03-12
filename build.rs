@@ -8,6 +8,8 @@ fn main() {
     println!("cargo:rerun-if-changed=wrapper.h");
     println!("cargo:rerun-if-env-changed=RDROOT");
 
+    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+
     let rdroot = std::env::var("RDROOT")
         .unwrap_or_else(|_| "/home/brent/omsf/clone/rdkit".to_owned());
 
@@ -29,8 +31,8 @@ fn main() {
         exit(1)
     }
 
-    let include = std::fs::canonicalize("./include").unwrap();
-    let include = include.display();
+    std::fs::rename("include/libshim.so", out_path.join("libshim.so"))
+        .expect("failed to move shared library to OUT_DIR");
 
     for lib in [
         "GraphMol",
@@ -43,9 +45,12 @@ fn main() {
         println!("cargo:rustc-link-lib=dylib=RDKit{lib}");
     }
     println!("cargo:rustc-link-lib=dylib=shim");
-    println!("cargo:rustc-link-arg=-Wl,-rpath,{rdlibs},-rpath,{include}");
+    println!(
+        "cargo:rustc-link-arg=-Wl,-rpath,{rdlibs},-rpath,{}",
+        out_path.display()
+    );
     println!("cargo:rustc-link-search=native={rdlibs}");
-    println!("cargo:rustc-link-search=native={include}");
+    println!("cargo:rustc-link-search=native={}", out_path.display());
 
     let bindings = bindgen::Builder::default()
         .header("wrapper.h")
@@ -53,7 +58,6 @@ fn main() {
         .generate()
         .expect("Unable to generate bindings");
 
-    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
     bindings
         .write_to_file(out_path.join("bindings.rs"))
         .expect("Couldn't write bindings!");
