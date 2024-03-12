@@ -14,7 +14,9 @@ fn main() {
         panic!("rdkit-sys: RDROOT must be set in the environment");
     };
 
-    let rdlibs = Path::new(&rdroot).join("build/lib").canonicalize().unwrap();
+    let Ok(rdlibs) = Path::new(&rdroot).join("build/lib").canonicalize() else {
+        panic!("failed to canonicalize rdroot: {rdroot:?}");
+    };
     let rdlibs = rdlibs.display();
 
     let rdroot = Path::new(&rdroot).canonicalize().unwrap();
