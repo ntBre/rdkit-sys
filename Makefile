@@ -5,3 +5,6 @@ $(lib): include/shim.h include/shim.cpp
 
 run:
 	cargo run --release
+
+clean:
+	cargo clean
