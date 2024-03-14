@@ -64,8 +64,10 @@ fn main() {
         "cargo:rustc-link-arg=-Wl,-rpath,{rdlibs},-rpath,{}",
         out_path.display()
     );
-    println!("cargo:rustc-link-search=native={rdlibs}");
-    println!("cargo:rustc-link-search=native={}", out_path.display());
+    println!("cargo:rustc-link-search={rdlibs}");
+    println!("cargo:rustc-link-search={}", out_path.display());
+
+    println!("cargo:include={}", out_path.display());
 
     let bindings = bindgen::Builder::default()
         .header("wrapper.h")
