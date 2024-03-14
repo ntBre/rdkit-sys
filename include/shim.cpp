@@ -135,8 +135,14 @@ void RDKit_AddHs(RDKit_ROMol *mol) {
   addHs(*m);
 }
 
-RDKit_ROMol *RDKit_SmilesToMol(const char *smiles) {
-  return reinterpret_cast<RDKit_ROMol *>(SmilesToMol(smiles));
+RDKit_ROMol *RDKit_SmilesToMol(const char *smiles, bool removeHs) {
+  SmilesParserParams params;
+  params.debugParse = 0;
+  params.sanitize = true;
+  params.allowCXSMILES = true;
+  params.parseName = true;
+  params.removeHs = removeHs;
+  return reinterpret_cast<RDKit_ROMol *>(SmilesToMol(smiles, params));
 }
 
 RDKit_ROMol *RDKit_SmartsToMol(const char *smarts) {

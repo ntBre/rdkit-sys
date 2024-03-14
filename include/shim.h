@@ -48,7 +48,7 @@ void RDKit_AssignStereochemistry(RDKit_ROMol *mol);
 void RDKit_AddHs(RDKit_ROMol *mol);
 
 // Mol <-> String conversions
-RDKit_ROMol *RDKit_SmilesToMol(const char *smiles);
+RDKit_ROMol *RDKit_SmilesToMol(const char *smiles, bool removeHs);
 RDKit_ROMol *RDKit_SmartsToMol(const char *smarts);
 char *RD(MolToSmiles)(RD(ROMol) * mol);
 char *RD(MolToInchiKey)(RD(ROMol) * mol);
