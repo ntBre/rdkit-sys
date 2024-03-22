@@ -51,6 +51,7 @@ void RDKit_AddHs(RDKit_ROMol *mol);
 RDKit_ROMol *RDKit_SmilesToMol(const char *smiles, bool removeHs,
                                bool sanitize);
 RDKit_ROMol *RDKit_SmartsToMol(const char *smarts);
+RDKit_ROMol *RD(JSONToMol)(const char *json);
 char *RD(MolToSmiles)(RD(ROMol) * mol);
 char *RD(MolToInchiKey)(RD(ROMol) * mol);
 

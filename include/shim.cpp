@@ -7,6 +7,7 @@
 #include <GraphMol/GraphMol.h>
 #include <GraphMol/MolDraw2D/MolDraw2DSVG.h>
 #include <GraphMol/MolDraw2D/MolDraw2DUtils.h>
+#include <GraphMol/MolInterchange/MolInterchange.h>
 #include <GraphMol/MolOps.h>
 #include <GraphMol/SmilesParse/SmilesParse.h>
 #include <GraphMol/SmilesParse/SmilesWrite.h>
@@ -24,6 +25,7 @@
 using namespace RDKit;
 using namespace RDKit::MolOps;
 using namespace RDKit::MorganFingerprints;
+using namespace RDKit::MolInterchange;
 
 #ifdef __cplusplus
 extern "C" {
@@ -148,6 +150,16 @@ RDKit_ROMol *RDKit_SmilesToMol(const char *smiles, bool removeHs,
 
 RDKit_ROMol *RDKit_SmartsToMol(const char *smarts) {
   return reinterpret_cast<RDKit_ROMol *>(SmartsToMol(smarts));
+}
+
+RDKit_ROMol *RD(JSONToMol)(const char *json) {
+  std::vector<boost::shared_ptr<ROMol>> mols =
+      MolInterchange::JSONDataToMols(json);
+  if (mols.size() < 1) {
+    return NULL;
+  }
+  ROMol *copied = new ROMol(*mols[0]);
+  return reinterpret_cast<RDKit_ROMol *>(copied);
 }
 
 char *RDKit_MolToSmiles(RDKit_ROMol *mol) {
