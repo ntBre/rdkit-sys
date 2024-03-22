@@ -15,13 +15,12 @@ mod tests {
 
     #[test]
     fn mol_supplier() {
-        let path = "testfiles/probe_mol.sdf";
-        let cpath = CString::new(path).unwrap();
+        let path = c"testfiles/probe_mol.sdf";
         let smarts =
             CString::new("[#6X4:1]-[#6X4:2]-[#6X4:3]-[#6X4:4]").unwrap();
 
         unsafe {
-            let m = RDKit_create_mol_supplier(cpath.as_ptr(), true);
+            let m = RDKit_create_mol_supplier(path.as_ptr(), true);
             let mut mol = RDKit_ROMol_new();
             while !RDKit_mol_supplier_at_end(m) {
                 RDKit_ROMol_delete(mol);
