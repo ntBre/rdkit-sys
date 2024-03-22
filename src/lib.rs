@@ -6,7 +6,10 @@ include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 
 #[cfg(test)]
 mod tests {
-    use std::ffi::{CStr, CString};
+    use std::{
+        ffi::{CStr, CString},
+        fs::read_to_string,
+    };
 
     use super::*;
 
@@ -42,6 +45,15 @@ mod tests {
                 let s = CStr::from_ptr(smiles);
                 println!("{}", s.to_str().unwrap());
             }
+        }
+    }
+
+    #[test]
+    fn from_json() {
+        let s = read_to_string("testfiles/commonchem.json").unwrap();
+        let cs = CString::new(s).unwrap();
+        unsafe {
+            RDKit_JSONToMol(cs.as_ptr());
         }
     }
 }
