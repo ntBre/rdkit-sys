@@ -5,6 +5,7 @@ use std::process::{exit, Command};
 fn main() {
     println!("cargo:rerun-if-changed=include/shim.h");
     println!("cargo:rerun-if-changed=include/shim.cpp");
+    println!("cargo:rerun-if-changed=include/Makefile");
     println!("cargo:rerun-if-changed=wrapper.h");
     println!("cargo:rerun-if-env-changed=RDROOT");
 
