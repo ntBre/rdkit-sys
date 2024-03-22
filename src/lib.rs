@@ -52,7 +52,12 @@ mod tests {
         let s = read_to_string("testfiles/commonchem.json").unwrap();
         let cs = CString::new(s).unwrap();
         unsafe {
-            RDKit_JSONToMol(cs.as_ptr());
+            let mol = RDKit_JSONToMol(cs.as_ptr());
+            let json = RDKit_MolToJSON(mol);
+            let got = CStr::from_ptr(json);
+            let want =
+                read_to_string("testfiles/want.commonchem.json").unwrap();
+            assert_eq!(got.to_str().unwrap(), want.trim());
         }
     }
 }
