@@ -7,7 +7,7 @@ run:
 	cargo run --release
 
 test:
-	cargo test -- --include-ignored
+	cargo test -- --include-ignored $(ARGS)
 
 clean:
 	cargo clean
