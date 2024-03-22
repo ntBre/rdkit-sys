@@ -162,6 +162,14 @@ RDKit_ROMol *RD(JSONToMol)(const char *json) {
   return reinterpret_cast<RDKit_ROMol *>(copied);
 }
 
+char *RD(MolToJSON)(RDKit_ROMol *mol) {
+  std::string s =
+      MolInterchange::MolToJSONData(*reinterpret_cast<ROMol *>(mol));
+  char *ret = new char[s.size() + 1];
+  strcpy(ret, s.c_str());
+  return ret;
+}
+
 char *RDKit_MolToSmiles(RDKit_ROMol *mol) {
   ROMol *m = reinterpret_cast<ROMol *>(mol);
   std::string s = MolToSmiles(*m);
