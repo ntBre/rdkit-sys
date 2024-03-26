@@ -156,7 +156,12 @@ RDKit_ROMol *RDKit_SmilesToMol(const char *smiles, bool removeHs,
   params.allowCXSMILES = true;
   params.parseName = true;
   params.removeHs = removeHs;
-  return reinterpret_cast<RDKit_ROMol *>(SmilesToMol(smiles, params));
+  try {
+    return reinterpret_cast<RDKit_ROMol *>(SmilesToMol(smiles, params));
+  } catch (const std::exception &exc) {
+    std::cout << smiles << std::endl << exc.what();
+    exit(1);
+  }
 }
 
 RDKit_ROMol *RDKit_SmartsToMol(const char *smarts) {
