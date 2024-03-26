@@ -109,6 +109,17 @@ unsigned int RD(ROMol_getNumAtoms)(RD(ROMol) * mol) {
   return reinterpret_cast<ROMol *>(mol)->getNumAtoms();
 }
 
+int *RD(ROMol_getElements)(RD(ROMol) * mol, size_t *numAtoms) {
+  ROMol *m = reinterpret_cast<ROMol *>(mol);
+  *numAtoms = m->getNumAtoms();
+  int *ret = (int *)malloc(*numAtoms * sizeof(int));
+  size_t i = 0;
+  for (auto atom : m->atoms()) {
+    ret[i++] = atom->getAtomicNum();
+  }
+  return ret;
+}
+
 unsigned int RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops) {
   RWMol *m = reinterpret_cast<RWMol *>(mol);
   unsigned int failed;

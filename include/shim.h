@@ -40,6 +40,7 @@ RDKit_ROMol *RDKit_ROMol_new();
 RDKit_ROMol *RDKit_ROMol_copy(RDKit_ROMol *other);
 void RDKit_ROMol_delete(RDKit_ROMol *mol);
 unsigned int RD(ROMol_getNumAtoms)(RD(ROMol) * mol);
+int *RD(ROMol_getElements)(RD(ROMol) * mol, size_t *numAtoms);
 
 // MolOps
 unsigned int RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops);
