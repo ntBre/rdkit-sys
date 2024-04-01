@@ -2,7 +2,7 @@ RDROOT ?= /home/brent/omsf/clone/rdkit
 
 boost := $(addprefix -lboost_,system serialization iostreams)
 rdkit := $(addprefix -lRDKit,GraphMol SmilesParse FileParsers Fingerprints	\
-							 MolDraw2D RDInchiLib MolInterchange)
+							 MolDraw2D RDInchiLib MolInterchange Depictor)
 
 CPPFLAGS += -I$(RDROOT)/Code -I$(RDROOT)/Code/DataStructs	\
 			-I$(RDROOT)/External/INCHI-API					\

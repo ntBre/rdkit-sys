@@ -5,6 +5,8 @@
 #define RD(name) RDKit_##name
 #define NEWTYPE(name) RDKit_##name RDKit_##name
 
+#define RSMOL RD(ROMol)
+
 typedef struct RDKit_SDMolSupplier RDKit_SDMolSupplier;
 typedef struct RDKit_MultithreadedSDMolSupplier
     RDKit_MultithreadedSDMolSupplier;
@@ -68,6 +70,8 @@ void RD(MorganFingerprintBitVector)(RD(ROMol) * mol, unsigned int radius,
 
 char *RD(MolDrawSVG)(RD(ROMol) * mol, int width, int height, const char *legend,
                      const int *hl_atoms, size_t hl_atom_count);
+
+unsigned int RD(compute2DCoords)(RSMOL *mol);
 
 RD(ChemicalReaction) * RD(RxnSmartsToChemicalReaction)(const char *smarts);
 RD(ROMol) * *RD(RunReactants)(RD(ChemicalReaction) * self, RD(ROMol) * reactant,

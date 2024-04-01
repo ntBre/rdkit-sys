@@ -2,6 +2,7 @@
 #include <GraphMol/ChemReactions/Reaction.h>
 #include <GraphMol/ChemReactions/ReactionParser.h>
 #include <GraphMol/ChemTransforms/ChemTransforms.h>
+#include <GraphMol/Depictor/RDDepictor.h>
 #include <GraphMol/FileParsers/MolSupplier.h>
 #include <GraphMol/Fingerprints/MorganFingerprints.h>
 #include <GraphMol/GraphMol.h>
@@ -298,6 +299,11 @@ char *RD(MolDrawSVG)(RD(ROMol) * mol, int width, int height, const char *legend,
   char *ret = new char[svg.size() + 1];
   strcpy(ret, svg.c_str());
   return ret;
+}
+
+unsigned int RD(compute2DCoords)(RSMOL *mol) {
+  ROMol *m = reinterpret_cast<ROMol *>(mol);
+  return RDDepict::compute2DCoords(*m);
 }
 
 RD(ChemicalReaction) * RD(RxnSmartsToChemicalReaction)(const char *smarts) {
