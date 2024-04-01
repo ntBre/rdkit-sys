@@ -90,6 +90,8 @@ RD(ROMol) * *RD(ReplaceSubstructs)(RD(ROMol) * mol, RD(ROMol) * query,
 
 // Begin Conformer
 Point3D *RD(Conformer_getPositions)(RD(Conformer) * conf, unsigned int *npos);
+
+void RD(Conformer_delete)(RD(Conformer) * conf);
 // End Conformer
 
 #ifdef __cplusplus

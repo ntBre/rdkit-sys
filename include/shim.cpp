@@ -403,6 +403,10 @@ Point3D *RD(Conformer_getPositions)(RD(Conformer) * conf, unsigned int *npos) {
 
   return ret;
 }
+
+void RD(Conformer_delete)(RD(Conformer) * conf) {
+  delete reinterpret_cast<Conformer *>(conf);
+}
 // End Conformer
 
 #ifdef __cplusplus
