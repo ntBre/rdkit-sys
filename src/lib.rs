@@ -7,7 +7,7 @@ include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 #[cfg(test)]
 mod tests {
     use std::{
-        ffi::{CStr, CString},
+        ffi::{c_int, CStr, CString},
         fs::read_to_string,
     };
 
@@ -56,6 +56,21 @@ mod tests {
             assert!(!mol.is_null());
             let json = RDKit_MolToJSON(mol);
             assert!(!json.is_null());
+        }
+    }
+
+    #[test]
+    fn get_conformer_position() {
+        unsafe {
+            let m = RDKit_SmilesToMol(c"CCO".as_ptr(), false, false);
+            let id = RDKit_compute2DCoords(m);
+            let conf = RDKit_ROMol_getConformer(m, id as c_int);
+            let mut npos = 0;
+            let ret = RDKit_Conformer_getPositions(conf, &mut npos);
+            assert!(!ret.is_null());
+            let positions =
+                Vec::from_raw_parts(ret, npos as usize, npos as usize);
+            assert_eq!(positions.len(), 3);
         }
     }
 }

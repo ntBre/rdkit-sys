@@ -121,6 +121,13 @@ int *RD(ROMol_getElements)(RD(ROMol) * mol, size_t *numAtoms) {
   return ret;
 }
 
+RD(Conformer) * RD(ROMol_getConformer)(RSMOL *mol, int id) {
+  ROMol *m = reinterpret_cast<ROMol *>(mol);
+  Conformer conf = m->getConformer(id);
+  Conformer *c = new Conformer(conf);
+  return reinterpret_cast<RD(Conformer) *>(c);
+}
+
 unsigned int RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops) {
   RWMol *m = reinterpret_cast<RWMol *>(mol);
   unsigned int failed;
@@ -378,6 +385,25 @@ RD(ROMol) * *RD(ReplaceSubstructs)(RD(ROMol) * mol, RD(ROMol) * query,
   }
   return reinterpret_cast<RDKit_ROMol **>(ret);
 }
+
+// Begin Conformer
+Point3D *RD(Conformer_getPositions)(RD(Conformer) * conf, unsigned int *npos) {
+  auto c = reinterpret_cast<Conformer *>(conf);
+  std::vector<RDGeom::Point3D> ps = c->getPositions();
+  *npos = ps.size();
+  Point3D *ret = (Point3D *)malloc(*npos * sizeof(Point3D));
+  size_t idx = 0;
+  for (auto r : ps) {
+    ret[idx++] = Point3D{
+        .x = r.x,
+        .y = r.y,
+        .z = r.z,
+    };
+  }
+
+  return ret;
+}
+// End Conformer
 
 #ifdef __cplusplus
 }

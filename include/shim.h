@@ -12,11 +12,16 @@ typedef struct RDKit_MultithreadedSDMolSupplier
     RDKit_MultithreadedSDMolSupplier;
 typedef struct RDKit_ROMol RDKit_ROMol;
 typedef struct NEWTYPE(ChemicalReaction);
+typedef struct NEWTYPE(Conformer);
 
 typedef struct {
   unsigned int bit;
   int count;
 } Pair;
+
+typedef struct {
+  double x, y, z;
+} Point3D;
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,6 +48,7 @@ RDKit_ROMol *RDKit_ROMol_copy(RDKit_ROMol *other);
 void RDKit_ROMol_delete(RDKit_ROMol *mol);
 unsigned int RD(ROMol_getNumAtoms)(RD(ROMol) * mol);
 int *RD(ROMol_getElements)(RD(ROMol) * mol, size_t *numAtoms);
+RD(Conformer) * RD(ROMol_getConformer)(RSMOL *mol, int id);
 
 // MolOps
 unsigned int RDKit_SanitizeMol(RDKit_ROMol *mol, unsigned int ops);
@@ -81,6 +87,10 @@ RD(ROMol) * *RD(RunReactants)(RD(ChemicalReaction) * self, RD(ROMol) * reactant,
 RD(ROMol) * *RD(ReplaceSubstructs)(RD(ROMol) * mol, RD(ROMol) * query,
                                    RD(ROMol) * replacement, bool replaceAll,
                                    size_t *len);
+
+// Begin Conformer
+Point3D *RD(Conformer_getPositions)(RD(Conformer) * conf, unsigned int *npos);
+// End Conformer
 
 #ifdef __cplusplus
 }
