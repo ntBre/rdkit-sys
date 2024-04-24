@@ -6,7 +6,7 @@ rdkit := $(addprefix -lRDKit,GraphMol SmilesParse FileParsers Fingerprints	\
 
 CPPFLAGS += -I$(RDROOT)/Code -I$(RDROOT)/Code/DataStructs	\
 			-I$(RDROOT)/External/INCHI-API					\
-			-std=c++17 -Wall -Wextra -pedantic -O2
+			-std=c++17 -Wall -Wextra -pedantic -O2 -g
 
 LDFLAGS += -L$(RDROOT)/build/lib $(boost) $(rdkit)
 
